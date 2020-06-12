@@ -5,6 +5,8 @@ const output = document.querySelector("input[id=output]");
 //Operadores Especiais
 const clearBtn = document.querySelector("button[id=clear]"); // C
 const operatorOk = document.querySelector("button[id=ok]"); //=
+const operatorPon = document.querySelector("button[id=ponto]");
+const operatorBS = document.querySelector("button[id=backspace]");
 
 //Operadores Matemáticos
 const operatorAdd = document.querySelector("button[id=add]"); // +
@@ -19,6 +21,20 @@ let num2 = "";
 let num2IsFull = false;
 let operator = 0;
 let result;
+let substring;
+
+function verification(operatorInput){
+    if(num1IsFull){
+        num2 = "";
+        num1 = result;
+        operator = operatorInput;
+    }
+
+    if (num1IsFull === false){
+        num1IsFull = true;
+        operator = operatorInput;
+    }
+}
 
 for (const number of numbers){
     number.addEventListener("click", () => {
@@ -30,18 +46,6 @@ for (const number of numbers){
             output.value = num2;
         }
     });
-}
-
-function verification(operatorInput){
-    if(num1IsFull){
-        num2 = "";
-        num1 = result;
-    }
-
-    if (num1IsFull === false){
-        num1IsFull = true;
-        operator = operatorInput;
-    }
 }
 
 operatorAdd.addEventListener("click", () => { //operator 1 (+)
@@ -63,28 +67,38 @@ operatorDiv.addEventListener("click", () => { //operator 4 (/)
 operatorOk.addEventListener("click", () => {
     switch (operator){
         case 1:
-            result = parseInt(num1) + parseInt(num2);
+            result = parseFloat(num1) + parseFloat(num2);
             output.value = result;
             break;
 
         case 2: 
-            result = parseInt(num1) - parseInt(num2);
+            result = parseFloat(num1) - parseFloat(num2);
             output.value = result;
             break;
 
         case 3:
-            result = parseInt(num1) * parseInt(num2);
+            result = parseFloat(num1) * parseFloat(num2);
             output.value = result;
             break;
 
         case 4: 
-            result = parseInt(num1) + parseInt(num2);
+            result = parseFloat(num1) / parseFloat(num2);
             output.value = result;
             break;
 
         default:
             console.log("ops");
             break;
+    }
+});
+
+operatorBS.addEventListener("click", () => {
+    if(num1IsFull){
+        substring = num2.substring(0, (num2.length -1));
+        output.value = substring;
+    } else if (num1IsFull === false){
+        substring = num1.substring(0, (num1.length -1));
+        output.value = substring;
     }
 });
 
