@@ -1,89 +1,72 @@
-//Números Query
-const numbers = document.querySelectorAll("button[class=number]");
-const output = document.querySelector("input[id=output]");
-
-//Operadores Especiais
-const clearBtn = document.querySelector("button[id=clear]"); // C
-const operatorOk = document.querySelector("button[id=ok]"); //=
-const operatorPon = document.querySelector("button[id=ponto]");
-const operatorBS = document.querySelector("button[id=backspace]");
-
-//Operadores Matemáticos
-const operatorAdd = document.querySelector("button[id=add]"); // +
-const operatorSub = document.querySelector("button[id=sub]"); // -
-const operatorMul = document.querySelector("button[id=mul]"); // *
-const operatorDiv = document.querySelector("button[id=div]"); // /
-
-
 let num1 = "";
-let num1IsFull = false;
 let num2 = "";
-let num2IsFull = false;
+let num1Full = false;
 let operator = 0;
-let result;
 let substring;
 
+$(".number").on("click", function(event){
+    const numberValue = event.target.value;
+
+    if(num1Full === false){
+        num1 += numberValue;
+        $("#input").val(num1);
+    } else if (num1Full === true){
+        num2 += numberValue;
+        $("#input").val(num2);
+    }
+});
+
 function verification(operatorInput){
-    if(num1IsFull){
+    if(num1Full){
         num2 = "";
         num1 = result;
+        operator = 0;
         operator = operatorInput;
     }
 
-    if (num1IsFull === false){
-        num1IsFull = true;
+    if (num1Full === false){
+        num1Full = true;
+        operator = 0;
         operator = operatorInput;
     }
 }
 
-for (const number of numbers){
-    number.addEventListener("click", () => {
-        if (num1IsFull === false){
-            num1 += number.value;
-            output.value = num1;
-        } else if (num1IsFull){
-            num2 += number.value;
-            output.value = num2;
-        }
-    });
-}
-
-operatorAdd.addEventListener("click", () => { //operator 1 (+)
+$("#add").on("click", () => {
     verification(1);
 });
 
-operatorSub.addEventListener("click", () => { //operator 2 (-)
+$("#sub").on("click", () => {
     verification(2);
 });
 
-operatorMul.addEventListener("click", () => { //operator 3 (*)
+$("#mul").on("click", () => {
     verification(3);
 });
 
-operatorDiv.addEventListener("click", () => { //operator 4 (/)
+$("#div").on("click", () => {
     verification(4);
 });
 
-operatorOk.addEventListener("click", () => {
+$("#ok").on("click", () => {
     switch (operator){
         case 1:
             result = parseFloat(num1) + parseFloat(num2);
-            output.value = result;
+            $("#input").val(result);
             break;
 
         case 2: 
             result = parseFloat(num1) - parseFloat(num2);
-            output.value = result;
+            $("#input").val(result);
             break;
 
         case 3:
             result = parseFloat(num1) * parseFloat(num2);
-            output.value = result;
+            $("#input").val(result);
             break;
 
         case 4: 
             result = parseFloat(num1) / parseFloat(num2);
-            output.value = result;
+            $("#input").val(result);
             break;
 
         default:
@@ -92,22 +75,23 @@ operatorOk.addEventListener("click", () => {
     }
 });
 
-operatorBS.addEventListener("click", () => {
-    if(num1IsFull){
+$("#backspace").on("click", () => {
+    if(num1Full){
         substring = num2.substring(0, (num2.length -1));
-        output.value = substring;
-    } else if (num1IsFull === false){
+        num2 = substring;
+        $("#input").val(num2);
+    } else if (num1Full === false){
         substring = num1.substring(0, (num1.length -1));
-        output.value = substring;
+        num1 = substring;
+        $("#input").val(num1);
     }
 });
 
-clearBtn.addEventListener("click", () => {
+$("#clear").on("click", () => {
     num1 = "";
-    num1IsFull = false;
+    num1Full = false;
     num2 = "";
     num2IsFull = false;
     operator = 0;
-    result;
-    output.value = "";
+    $("#input").val("");
 });
